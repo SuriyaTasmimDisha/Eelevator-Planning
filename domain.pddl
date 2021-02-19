@@ -9,7 +9,6 @@
   )
 
   (:predicates
-
     (origin ?person - passenger ?floor - count)
     (dest ?person - passenger ?floor - count)
     (boarded ?person - passenger ?lift - elevator)
