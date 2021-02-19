@@ -11,6 +11,8 @@
 
     (:init
 
+        (is-special p2)
+
         (next n0 n1)
         (next n1 n2)
         (next n2 n3)
@@ -113,7 +115,7 @@
         (reachable-floor student1 n8)
 
         (lift-at student2 n0)
-        (passengers student1 n0)
+        (passengers student2 n0)
         (can-hold student2 n1)
         (can-hold student2 n2)
         (can-hold student2 n3)
@@ -124,17 +126,25 @@
         (can-hold student2 n8)
         (can-hold student2 n9)
         (can-hold student2 n10)
+        (reachable-floor student2 n0)
+        (reachable-floor student2 n4)
+        (reachable-floor student2 n3)
+        (reachable-floor student2 n6)
 
-        (reachable-floor student1 n4)
-        (reachable-floor student1 n3)
-        (reachable-floor student1 n6)
 
-        (passenger-at p0 n8)
-        (passenger-at p1 n3)
-        (passenger-at p2 n2)
-        (passenger-at p3 n2)
-        (passenger-at t0 n3)
-        (passenger-at t1 n1)
+        (origin p0 n8)
+        (origin p1 n3)
+        (origin p2 n7)
+        (origin p3 n2)
+        (origin t0 n3)
+        (origin t1 n1)
+
+        (dest p0 n5)
+        (dest p1 n6)
+        (dest p2 n1)
+        (dest p3 n5)
+        (dest t0 n6)
+        (dest t1 n7)
 
         (= (travel-slow n0 n1) 6)
         (= (travel-slow n0 n2) 7)
@@ -229,12 +239,13 @@
 
     (:goal
         (and
-            (passenger-at p0 n4)
-            (passenger-at p1 n6)
-            (passenger-at p2 n1)
-            (passenger-at p3 n8)
-            (passenger-at t0 n6)
-            (passenger-at t1 n7)
+             (served p0)
+             (served p1)
+             (served p2)
+             (served p3)
+             (served t0)
+             (served t1)
+
         )
     )
 
