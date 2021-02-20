@@ -5,6 +5,7 @@
     slow-elevator fast-elevator - elevator
     passenger - object
     teacher - passenger
+    general - passenger
     count - object
   )
 
@@ -18,8 +19,9 @@
     (passengers ?lift - elevator ?n - count)
     (can-hold ?lift - elevator ?n - count)
     (next ?n1 - count ?n2 - count)
-    (contains-special ?lift - slow-elevator)
+    (contains-special ?lift - elevator)
     (is-special ?person - passenger)
+    (is-restricted ?lift - elevator)
     (served ?person - passenger)
   )
 
@@ -29,65 +31,155 @@
     (travel-fast ?f1 - count ?f2 - count) - number
   )
 
-  (:action move-up-slow
+  (:action up-slow
     :parameters (?lift - slow-elevator ?f1 - count ?f2 - count)
-    :precondition (and (lift-at ?lift ?f1) (above ?f1 ?f2) (reachable-floor ?lift ?f2))
-    :effect (and (lift-at ?lift ?f2) (not (lift-at ?lift ?f1)) (increase (total-cost) (travel-slow ?f1 ?f2)))
+    :precondition (and
+      (lift-at ?lift ?f1)
+      (above ?f1 ?f2)
+      (reachable-floor ?lift ?f2))
+    :effect (and
+      (lift-at ?lift ?f2)
+      (not (lift-at ?lift ?f1))
+      (increase (total-cost) (travel-slow ?f1 ?f2)))
   )
 
-  (:action move-down-slow
+  (:action down-slow
     :parameters (?lift - slow-elevator ?f1 - count ?f2 - count)
-    :precondition (and (lift-at ?lift ?f1) (above ?f2 ?f1) (reachable-floor ?lift ?f2))
-    :effect (and (lift-at ?lift ?f2) (not (lift-at ?lift ?f1)) (increase (total-cost) (travel-slow ?f2 ?f1)))
+    :precondition (and
+      (lift-at ?lift ?f1)
+      (above ?f2 ?f1)
+      (reachable-floor ?lift ?f2))
+    :effect (and
+      (lift-at ?lift ?f2)
+      (not (lift-at ?lift ?f1))
+      (increase (total-cost) (travel-slow ?f2 ?f1)))
   )
 
-  (:action move-up-fast
+  (:action up-fast
     :parameters (?lift - fast-elevator ?f1 - count ?f2 - count)
-    :precondition (and (lift-at ?lift ?f1) (above ?f1 ?f2) (reachable-floor ?lift ?f2))
-    :effect (and (lift-at ?lift ?f2) (not (lift-at ?lift ?f1)) (increase (total-cost) (travel-fast ?f1 ?f2)))
+    :precondition (and
+      (lift-at ?lift ?f1)
+      (above ?f1 ?f2)
+      (reachable-floor ?lift ?f2))
+    :effect (and
+      (lift-at ?lift ?f2)
+      (not (lift-at ?lift ?f1))
+      (increase (total-cost) (travel-fast ?f1 ?f2)))
   )
 
-  (:action move-down-fast
+  (:action down-fast
     :parameters (?lift - fast-elevator ?f1 - count ?f2 - count)
-    :precondition (and (lift-at ?lift ?f1) (above ?f2 ?f1) (reachable-floor ?lift ?f2))
-    :effect (and (lift-at ?lift ?f2) (not (lift-at ?lift ?f1)) (increase (total-cost) (travel-fast ?f2 ?f1)))
+    :precondition (and
+      (lift-at ?lift ?f1)
+      (above ?f2 ?f1)
+      (reachable-floor ?lift ?f2))
+    :effect (and
+      (lift-at ?lift ?f2)
+      (not (lift-at ?lift ?f1))
+      (increase
+        (total-cost)
+        (travel-fast ?f2 ?f1)))
   )
 
-  (:action board-fast
+  (:action load-teacher
     :parameters (?p - teacher ?lift - fast-elevator ?f - count ?n1 - count ?n2 - count)
-    :precondition (and (not (served ?p)) (lift-at ?lift ?f) (origin ?p ?f) (passengers ?lift ?n1) (next ?n1 ?n2) (can-hold ?lift ?n2))
-    :effect (and (boarded ?p ?lift) (not (passengers ?lift ?n1)) (passengers ?lift ?n2))
+    :precondition (and
+      (not (served ?p))
+      (is-restricted ?lift)
+      (lift-at ?lift ?f)
+      (origin ?p ?f)
+      (passengers ?lift ?n1)
+      (next ?n1 ?n2)
+      (can-hold ?lift ?n2))
+    :effect (and
+      (boarded ?p ?lift)
+      (not (passengers ?lift ?n1))
+      (passengers ?lift ?n2))
   )
 
-  (:action leave-fast
+  (:action unload-teacher
     :parameters (?p - teacher ?lift - fast-elevator ?f - count ?n1 - count ?n2 - count)
-    :precondition (and (dest ?p ?f) (lift-at ?lift ?f) (boarded ?p ?lift) (passengers ?lift ?n1) (next ?n2 ?n1))
-    :effect (and (served ?p) (not (boarded ?p ?lift)) (not (passengers ?lift ?n1)) (passengers ?lift ?n2))
+    :precondition (and
+      (dest ?p ?f)
+      (is-restricted ?lift)
+      (lift-at ?lift ?f)
+      (boarded ?p ?lift)
+      (passengers ?lift ?n1)
+      (next ?n2 ?n1))
+    :effect (and
+      (served ?p)
+      (not (boarded ?p ?lift))
+      (not (passengers ?lift ?n1))
+      (passengers ?lift ?n2))
   )
 
-  (:action board-special
-    :parameters (?p - passenger ?lift - slow-elevator ?f - count ?n1 - count ?n2 - count)
-    :precondition (and (is-special ?p) (not (served ?p)) (not(contains-special ?lift)) (lift-at ?lift ?f) (origin ?p ?f) (passengers ?lift ?n1) (next ?n1 ?n2) (can-hold ?lift ?n2))
-    :effect (and (contains-special ?lift) (boarded ?p ?lift) (not (passengers ?lift ?n1)) (passengers ?lift ?n2))
-
+  (:action load-special
+    :parameters (?p - passenger ?lift - fast-elevator ?f - count ?n1 - count ?n2 - count)
+    :precondition (and
+      (is-special ?p)
+      (not(is-restricted ?lift))
+      (not (served ?p))
+      (not(contains-special ?lift))
+      (lift-at ?lift ?f)
+      (origin ?p ?f)
+      (passengers ?lift ?n1)
+      (next ?n1 ?n2)
+      (can-hold ?lift ?n2))
+    :effect (and
+      (contains-special ?lift)
+      (boarded ?p ?lift)
+      (not (passengers ?lift ?n1))
+      (passengers ?lift ?n2))
+  )
+  (:action unload-special
+    :parameters (?p - passenger ?lift - fast-elevator ?f - count ?n1 - count ?n2 - count)
+    :precondition (and
+      (is-special ?p)
+      (dest ?p ?f)
+      (lift-at ?lift ?f)
+      (boarded ?p ?lift)
+      (passengers ?lift ?n1)
+      (next ?n2 ?n1))
+    :effect (and
+      (served ?p)
+      (not (boarded ?p ?lift))
+      (not (passengers ?lift ?n1))
+      (passengers ?lift ?n2)
+      (not(contains-special ?lift)))
   )
 
-  (:action board-general
-    :parameters (?p - passenger ?lift - slow-elevator ?f - count ?n1 - count ?n2 - count)
-    :precondition (and (not(is-special ?p)) (not (served ?p)) (not(contains-special ?lift)) (lift-at ?lift ?f) (origin ?p ?f) (passengers ?lift ?n1) (next ?n1 ?n2) (can-hold ?lift ?n2))
-    :effect (and (boarded ?p ?lift) (not (passengers ?lift ?n1)) (passengers ?lift ?n2))
+  (:action load-general
+    :parameters (?p - passenger ?lift - elevator ?f - count ?n1 - count ?n2 - count)
+    :precondition (and
+      (not(is-restricted ?lift))
+      (not(is-special ?p))
+      (not (served ?p))
+      (not(contains-special ?lift))
+      (lift-at ?lift ?f)
+      (origin ?p ?f)
+      (passengers ?lift ?n1)
+      (next ?n1 ?n2) (can-hold ?lift ?n2))
+    :effect (and
+      (boarded ?p ?lift)
+      (not (passengers ?lift ?n1))
+      (passengers ?lift ?n2))
   )
 
-  (:action leave-special
-    :parameters (?p - passenger ?lift - slow-elevator ?f - count ?n1 - count ?n2 - count)
-    :precondition (and (is-special ?p) (dest ?p ?f) (lift-at ?lift ?f) (boarded ?p ?lift) (passengers ?lift ?n1) (next ?n2 ?n1))
-    :effect (and (served ?p) (not (boarded ?p ?lift)) (not (passengers ?lift ?n1)) (passengers ?lift ?n2) (not(contains-special ?lift)))
+  (:action unload-general
+    :parameters (?p - general ?lift - elevator ?f - count ?n1 - count ?n2 - count)
+    :precondition (and
+      (not(is-restricted ?lift))
+      (not(is-special ?p))
+      (not(contains-special ?lift))
+      (dest ?p ?f)
+      (lift-at ?lift ?f)
+      (boarded ?p ?lift)
+      (passengers ?lift ?n1)
+      (next ?n2 ?n1))
+    :effect (and
+      (served ?p)
+      (not (boarded ?p ?lift))
+      (not (passengers ?lift ?n1))
+      (passengers ?lift ?n2))
   )
-
-  (:action leave-general
-    :parameters (?p - passenger ?lift - slow-elevator ?f - count ?n1 - count ?n2 - count)
-    :precondition (and (not(contains-special ?lift)) (dest ?p ?f) (lift-at ?lift ?f) (boarded ?p ?lift) (passengers ?lift ?n1) (next ?n2 ?n1))
-    :effect (and (served ?p) (not (boarded ?p ?lift)) (not (passengers ?lift ?n1)) (passengers ?lift ?n2))
-  )
-
 )
