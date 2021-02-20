@@ -65,28 +65,29 @@
     :effect (and (served ?p) (not (boarded ?p ?lift)) (not (passengers ?lift ?n1)) (passengers ?lift ?n2))
   )
 
-  (:action board-slow
+  (:action board-special
     :parameters (?p - passenger ?lift - slow-elevator ?f - count ?n1 - count ?n2 - count)
-    :precondition (and (not (served ?p)) (not(contains-special ?lift)) (lift-at ?lift ?f) (origin ?p ?f) (passengers ?lift ?n1) (next ?n1 ?n2) (can-hold ?lift ?n2))
-    :effect (and
-      (when(is-special ?p)
-        (and (contains-special ?lift) (boarded ?p ?lift) (not (passengers ?lift ?n1)) (passengers ?lift ?n2))
-      )
-      (when(not(is-special ?p))
-        (and (boarded ?p ?lift) (not (passengers ?lift ?n1)) (passengers ?lift ?n2))
-      )
-    )
+    :precondition (and (is-special ?p) (not (served ?p)) (not(contains-special ?lift)) (lift-at ?lift ?f) (origin ?p ?f) (passengers ?lift ?n1) (next ?n1 ?n2) (can-hold ?lift ?n2))
+    :effect (and (contains-special ?lift) (boarded ?p ?lift) (not (passengers ?lift ?n1)) (passengers ?lift ?n2))
+
   )
 
-  (:action leave-slow-special
+  (:action board-general
+    :parameters (?p - passenger ?lift - slow-elevator ?f - count ?n1 - count ?n2 - count)
+    :precondition (and (not(is-special ?p)) (not (served ?p)) (not(contains-special ?lift)) (lift-at ?lift ?f) (origin ?p ?f) (passengers ?lift ?n1) (next ?n1 ?n2) (can-hold ?lift ?n2))
+    :effect (and (boarded ?p ?lift) (not (passengers ?lift ?n1)) (passengers ?lift ?n2))
+  )
+
+  (:action leave-special
     :parameters (?p - passenger ?lift - slow-elevator ?f - count ?n1 - count ?n2 - count)
     :precondition (and (is-special ?p) (dest ?p ?f) (lift-at ?lift ?f) (boarded ?p ?lift) (passengers ?lift ?n1) (next ?n2 ?n1))
     :effect (and (served ?p) (not (boarded ?p ?lift)) (not (passengers ?lift ?n1)) (passengers ?lift ?n2) (not(contains-special ?lift)))
   )
 
-  (:action leave-slow-general
+  (:action leave-general
     :parameters (?p - passenger ?lift - slow-elevator ?f - count ?n1 - count ?n2 - count)
     :precondition (and (not(contains-special ?lift)) (dest ?p ?f) (lift-at ?lift ?f) (boarded ?p ?lift) (passengers ?lift ?n1) (next ?n2 ?n1))
     :effect (and (served ?p) (not (boarded ?p ?lift)) (not (passengers ?lift ?n1)) (passengers ?lift ?n2))
   )
+
 )

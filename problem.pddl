@@ -8,7 +8,7 @@
         faculty - fast-elevator
         student0 student1 student2 - slow-elevator
     )
-
+    
     (:init
 
         (is-special p2)
