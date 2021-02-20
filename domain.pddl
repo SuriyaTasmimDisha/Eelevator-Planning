@@ -76,9 +76,7 @@
     :effect (and
       (lift-at ?lift ?f2)
       (not (lift-at ?lift ?f1))
-      (increase
-        (total-cost)
-        (travel-fast ?f2 ?f1)))
+      (increase (total-cost) (travel-fast ?f2 ?f1)))
   )
 
   (:action load-teacher
@@ -131,6 +129,7 @@
       (not (passengers ?lift ?n1))
       (passengers ?lift ?n2))
   )
+
   (:action unload-special
     :parameters (?p - passenger ?lift - fast-elevator ?f - count ?n1 - count ?n2 - count)
     :precondition (and
@@ -164,7 +163,7 @@
       (not (passengers ?lift ?n1))
       (passengers ?lift ?n2))
   )
-
+  
   (:action unload-general
     :parameters (?p - general ?lift - elevator ?f - count ?n1 - count ?n2 - count)
     :precondition (and
