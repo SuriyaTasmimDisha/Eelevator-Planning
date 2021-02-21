@@ -10,11 +10,11 @@ In our domain, there are two types of users (general, teacher) and two types of 
 
 #### Actions used:
 
-`up-slow` Moves a slow elevator upwards.\
-`down-slow` Moves a slow elevator downwards.\
-`up-fast` Moves a slow elevator upwards.\
-`down-down` Moves a slow elevator downwards.\
-`load-teacher` A teacher boards the elevator reserved for the teachers.\
+`up-slow` A slow elevator moves upwards.\
+`down-slow` A slow elevator moves downwards.\
+`up-fast` A fast elevator moves upwards.\
+`down-down` A fast elevator moves downwards.\
+`load-teacher` A teacher boards the elevator.\
 `unload-teacher` A teacher leaves the elevator.\
 `load-special` A special person boards the elevator.\
 `unload-special` A special person leaves the fast elevator.\
