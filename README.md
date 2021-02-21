@@ -8,7 +8,7 @@ There are around 0.3 million buildings and more than 1 thousand high-rise buildi
 
 In our domain, there are two types of users (general, teacher) and two types of elevators (Fast, Slow). Each of these elevators has its own reachability to different floors specified in the problem file.
 
-### Actions used:
+#### Actions used:
 
 `up-slow` Moves a slow elevator upwards.\
 `down-slow` Moves a slow elevator downwards.\
@@ -19,7 +19,7 @@ In our domain, there are two types of users (general, teacher) and two types of 
 `load-special` A special person boards the elevator.\
 `unload-special` A special person leaves the fast elevator.\
 `load-general` A general person boards the elevator.\
-`unload-general` A general person leaves the fast elevator.\
+`unload-general` A general person leaves the fast elevator.
 
 ### Problem 1
 
