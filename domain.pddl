@@ -9,6 +9,9 @@
     count - object
   )
 
+  
+  Domain:
+  
   (:predicates
     (origin ?person - passenger ?floor - count)
     (dest ?person - passenger ?floor - count)
