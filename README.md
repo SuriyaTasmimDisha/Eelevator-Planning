@@ -2,8 +2,7 @@
 
 ### Problem Statement
 
-There are around 0.3 million buildings and more than 1 thousand high-rise buildings in Dhaka city and many under construction. There are more than two hundred elevators are being attached every month to these buildings. The electrical energy used by the elevator of a building is around 4% of the overall consumption. Elevators move up and down with predetermined rules which is not time and energy-efficient. Also, conventional elevators don't provide any feature that can be beneficial for disabled users. AI planning offers an elegant approach to solve this problem. We have modeled a domain for the elevators of an educational institution with PDDL by which a planner can find plans to control the elevators to serve passengers. Our domain also minimizes total electrical power consumption and provides a new feature dedicated to special users.
-
+There are around 0.3 million buildings and more than 1 thousand high-rise buildings in Dhaka city and many under construction. There are more than two hundred elevators are being attached every month to these buildings. The electrical energy used by the elevator of a building is around 4% of the overall consumption. Elevators move up and down with predetermined rules which is not time and energy-efficient. Also, conventional elevators don't provide any feature that can be beneficial for disabled users. AI planning offers an elegant approach to solve this problem. We have modeled a domain for the elevators of an educational institution with PDDL. Using our domain a planner can find an efficient plan for the elevators that can be used to serve all the passengers with the minimum electrical power consumption. Our domain also provides a new feature that offers nonstop travel to special users.
 
 ### Domain
 
