@@ -17,9 +17,9 @@ In our domain, there are two types of users (general, teacher) and two types of 
 `load-teacher` A teacher boards the elevator.\
 `unload-teacher` A teacher leaves the elevator.\
 `load-special` A special person boards the elevator.\
-`unload-special` A special person leaves the fast elevator.\
+`unload-special` A special person leaves the elevator.\
 `load-general` A general person boards the elevator.\
-`unload-general` A general person leaves the fast elevator.
+`unload-general` A general person leaves the elevator.
 
 ### Problem 1
 
