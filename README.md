@@ -6,7 +6,7 @@ There are around 0.3 million buildings and more than 1 thousand high-rise buildi
 
 ### Domain
 
-In our domain, there are two types of users (general, teacher) and two types of elevators (Fast, Slow). Each of these elevators has its own reachability to different floors specified in the problem file.
+In our domain, there are two types of users (general, teacher) and two types of elevators (fast, slow). Each of the elevators has a cost associated with it for the distance it travels. An elevator will stop at different floors according to its reachability.
 
 #### Actions used:
 
